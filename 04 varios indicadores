@@ -1,0 +1,57 @@
+#curso de beautifulsoup https://www.youtube.com/watch?v=yKi9-BfbfzQ
+import os
+import time
+from bs4 import BeautifulSoup
+import requests
+import datetime
+
+def pausa (seg):
+    for i in range(seg,0,-1):
+        print(f"{i}  ", end="\r")
+        time.sleep(1)
+
+#variables iniciales
+
+#bot
+while True:
+    #cabecera
+    os.system("cls")
+    ahora=datetime.datetime.now()  #dia hora
+    ahorafor=ahora.strftime("%d.%m.%Y %a %H:%M:%S") #formato
+    print(ahorafor)
+
+    #scraping
+    #find_all  limit=3 cantidad datos
+
+    #1 fear and greed btc
+    soup1=BeautifulSoup(((requests.get('https://alternative.me/crypto/fear-and-greed-index/')).text),"html.parser")
+    scrap1=soup1.find_all('div',class_='fng-circle')
+    
+    #2 fear and greed crypto
+    soup2=BeautifulSoup(((requests.get('https://coinmarketcap.com/charts/fear-and-greed-index/')).text),"html.parser")
+    scrap2=soup2.find_all('div',class_='sc-65e7f566-0 gVajsk')  
+    
+    #3,4 dominancia de btc
+    soup3=BeautifulSoup(((requests.get('https://coinstats.app/es/btc-dominance/')).text),"html.parser")
+    scrap3=soup3.find_all('p',class_='btc-dominance_btcDominanceHeaderContentInfoPercent__oK5Vn')
+    scrap4=soup3.find_all('div',class_='PriceChangeBadge_priceChangeBadge__Ge2D1 btc-dominance_priceChangeBadge__oaGqu PriceChangeBadge_priceUp__MmhOQ')
+
+    #5 hoja de activos
+    soup5=BeautifulSoup(((requests.get('https://fred.stlouisfed.org/series/WALCL')).text),"html.parser")
+    scrap5=soup5.find_all('span',class_='series-meta-observation-value')
+
+    #6 tasa de interes
+    soup6=BeautifulSoup(((requests.get('https://fred.stlouisfed.org/series/FEDFUNDS')).text),"html.parser")
+    scrap6=soup6.find_all('span',class_='series-meta-observation-value')
+
+    print(scrap6)   
+
+    print("")
+    print(f"fear&greed BTC    ahora:{scrap1[0].text}  ayer:{scrap1[1].text}  semana:{scrap1[2].text}  mes:{scrap1[3].text}")
+    print(f"fear&greed crypto ahora:{scrap2[1].text[0:2]}") 
+    print(f"dominancia BTC {scrap3[0].text}  {scrap4[0].text}")
+    print(f"hoja de activos x1M  {scrap5[0].text}")
+    print(f"tasa de interes  {scrap6[0].text}")
+
+    
+    pausa(3600)   #1dia=86.400seg  9000seg=2.5hs
