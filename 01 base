@@ -1,0 +1,64 @@
+from asyncio.windows_events import NULL
+import os
+from tarfile import NUL
+import feedparser  #rss
+import time
+from email.message import EmailMessage  #empaquetar email
+import urllib.request  #url a archivo
+import smtplib    #pip install secure-smtplib
+from bs4 import BeautifulSoup
+import requests
+
+def pausa (seg):
+    for i in range(seg,0,-1):
+        print(f"{i}  ", end="\r")
+        time.sleep(1)
+
+def email1(receptor,asunto,mensaje,adjunto):
+    emisor="mdchmariano@gmail.com"
+    texto=EmailMessage()
+    texto.set_content(mensaje)
+    texto['Subject'] = asunto
+    texto['From'] = "mdchmariano@gmail.com"
+    texto['To'] = receptor
+    if adjunto!=NULL:
+        md4=urllib.request.urlopen(adjunto)  #url a archivo
+        texto.add_attachment(md4.read(), maintype='image', subtype='jpg', filename='example.jpg')
+    server=smtplib.SMTP("smtp.gmail.com",587)
+    server.starttls()
+    server.login(emisor,"chgv wwpc qexr fytq")  # https://myaccount.google.com/apppasswords
+    server.send_message(texto)
+    server.quit()
+    print("email...")
+    pausa(3)
+
+#variables iniciales
+
+
+#test diccionario
+#feed.keys()  /  feed.entries[0].keys()  /  len(feed.entries)
+#feed.entries /  feed.entries[0].media_thumbnail[0]['url'])
+
+#bot
+while True:
+    #cabecera
+    os.system("cls")
+
+    print("___rss cointelegraph")
+    feeda=feedparser.parse("https://es.cointelegraph.com/rss")
+    a1=feeda.entries[0].title
+    a2=feeda.entries[0].link
+    a3=feeda.entries[0].media_content[0]['url']
+    print(a1,a2,a3)
+    #email1("marianochiodo.mdc11@blogger.com",a1,a2,a3)
+
+    print("___rss diariobitcoin")
+    feedb=feedparser.parse("https://www.diariobitcoin.com/feed/")
+    b1=feedb.entries[0].title
+    b2=feedb.entries[0].link  #b2=feedb.entries[0].description
+    b3=feedb.entries[0].content_encoded[0]['scr']
+    print(b1,b2,b3)
+    #email1("marianochiodo.mdc11@blogger.com",b1,b2,NULL)
+
+        
+    pausa(9000)   #1dia=86.400seg  9000seg=2.5hs
