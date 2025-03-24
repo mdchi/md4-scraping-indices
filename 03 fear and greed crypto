@@ -1,0 +1,44 @@
+#curso de beautifulsoup https://www.youtube.com/watch?v=yKi9-BfbfzQ
+import os
+import time
+from bs4 import BeautifulSoup
+import requests
+
+def pausa (seg):
+    for i in range(seg,0,-1):
+        print(f"{i}  ", end="\r")
+        time.sleep(1)
+
+#variables iniciales
+
+#bot
+while True:
+    #cabecera
+    os.system("cls")
+
+    #scraping
+    #find_all  limit=3 cantidad datos
+
+    soup1=BeautifulSoup(((requests.get('https://alternative.me/crypto/fear-and-greed-index/')).text),"html.parser")
+    scrap1=soup1.find_all('div',class_='fng-circle')
+    print("{:<20}{:<7}{:<5}{:<7}{:<5}{:<7}{:<5}{:<7}{:<5}".format("fear&greed BTC","ahora:",scrap1[0].text,"ayer:",scrap1[1].text,"semana:",scrap1[2].text,"mes:",scrap1[3].text))
+    
+    soup2=BeautifulSoup(((requests.get('https://coinmarketcap.com/charts/fear-and-greed-index/')).text),"html.parser")
+    scrap2=soup2.find_all('div',class_='sc-65e7f566-0 gVajsk')
+    print("{:<20}{:<7}{:<5}".format("fear&greed crypto","ahora:",(scrap2[1].text)[0:2]))
+        
+    #scrap2=soup2.find_all('div')
+    
+    #print((scrap2[1].text)[0:2])
+
+
+    
+
+    
+    #email1("marianochiodo.mdc11@blogger.com",a1,a2,a3)
+
+
+    #print("___rss diariobitcoin")
+    #email1("marianochiodo.mdc11@blogger.com",b1,b2,NULL)
+
+    pausa(3600)   #1dia=86.400seg  9000seg=2.5hs
