@@ -1,0 +1,84 @@
+#curso de beautifulsoup https://www.youtube.com/watch?v=yKi9-BfbfzQ
+import os
+import time
+from bs4 import BeautifulSoup
+import requests
+import datetime
+from colorama import init,Back  #Style,Fore
+
+def pausa (seg):
+    for i in range(seg,0,-1):
+        print(f"{i}  ", end="\r")
+        time.sleep(1)
+ 
+def color1(numero):
+    return(Back.BLUE+str(numero))
+
+def color0(numero):
+    return (Back.BLACK+numero)
+
+#variables iniciales
+init()
+
+#bot
+while True:
+    #cabecera
+    os.system("cls")
+    ahora=datetime.datetime.now()  #dia hora
+    ahorafor=ahora.strftime("%d.%m.%Y %a %H:%M:%S") #formato
+    print(ahorafor)
+
+    #scraping
+    #find_all  limit=3 cantidad datos
+
+    #1 fear and greed btc
+    soup1=BeautifulSoup(((requests.get('https://alternative.me/crypto/fear-and-greed-index/')).text),"html.parser")
+    scrap1=soup1.find_all('div',class_='fng-circle')
+    scrap1=scrap1[0].text
+
+    #2 fear and greed crypto
+    soup2=BeautifulSoup(((requests.get('https://coinmarketcap.com/charts/fear-and-greed-index/')).text),"html.parser")
+    scrap2=soup2.find_all('div',class_='sc-65e7f566-0 gVajsk')
+    scrap2=scrap2[1].text[0:2] 
+    
+    #3 dolar
+    soup3=BeautifulSoup(((requests.get('https://dolarhoy.com/')).text),"html.parser")
+    scrap3=soup3.find_all('div',class_='val')
+    scrap3a=scrap3[0].text[1:]
+    scrap3b=scrap3[1].text[1:]
+
+    #4 altcoin season
+    soup4=BeautifulSoup(((requests.get('https://coinmarketcap.com/charts/')).text),"html.parser")
+    scrap4a=soup4.find_all('span',class_='sc-65e7f566-0 exabdI index-value')
+    scrap4a=scrap4a[0].text
+
+    #4 dominancia
+    scrap4b=soup4.find_all('span',class_='sc-65e7f566-0 exabdI base-text')
+    scrap4b1=scrap4b[0].text
+    scrap4b2=scrap4b[1].text
+    scrap4b3=scrap4b[2].text
+
+
+
+    #5
+    #soup5=BeautifulSoup(((requests.get('https://fred.stlouisfed.org/series/FEDFUNDS')).text),"html.parser")
+    #scrap5=soup5.find_all('span',class_='series-meta-observation-value')
+    #6
+    #soup6=BeautifulSoup(((requests.get('https://es.investing.com/economic-calendar/manufacturing-pmi-829')).text),"html.parser")
+    #scrap6=soup6.find_all('div',class_='key-stat-title')
+
+
+
+    #print(scrap4b[0].text)
+    
+
+
+    print("")
+    print("dolar:",color1(scrap3a),color0(""),color1(scrap3b),color0(" dolarhoy"))
+    print("fear&greed btc:",color1(scrap1),color0(" crypto:"),color1(scrap2),color0(" alternative.me/cmc"))
+    print("altcoin season:",color1(scrap4a),color0(" cmc"))
+    print("dominancia btc:",color1(scrap4b1),color0(" eth:"),color1(scrap4b2),color0(" otros:"),color1(scrap4b3),color0(" cmc"))
+    print("")
+
+    
+    pausa(9000)   #1dia=86.400seg  9000seg=2.5hs
