@@ -1,0 +1,81 @@
+#curso de beautifulsoup https://www.youtube.com/watch?v=yKi9-BfbfzQ
+import os
+import time
+from bs4 import BeautifulSoup
+import requests
+import datetime
+from colorama import init,Back  #Style,Fore
+
+def pausa (seg):
+    for i in range(seg,0,-1):
+        print(f"{i}  ", end="\r")
+        time.sleep(1)
+ 
+def color1(numero):
+    return(Back.GREEN+str(numero))
+
+def color0(numero):
+    return (Back.BLACK+numero)
+
+#variables iniciales
+init()
+
+#bot
+while True:
+    #cabecera
+    os.system("cls")
+    ahora=datetime.datetime.now()  #dia hora
+    ahorafor=ahora.strftime("%d.%m.%Y %a %H:%M:%S") #formato
+    print(ahorafor)
+
+    #scraping
+    #find_all  limit=3 cantidad datos
+
+    #1 fear and greed btc
+    soup1=BeautifulSoup(((requests.get('https://alternative.me/crypto/fear-and-greed-index/')).text),"html.parser")
+    dato1=soup1.find_all('div',class_='fng-circle')
+    dato1=dato1[0].text
+
+    #2 fear and greed crypto
+    soup2=BeautifulSoup(((requests.get('https://coinmarketcap.com/charts/fear-and-greed-index/')).text),"html.parser")
+    dato2=soup2.find_all('div',class_='sc-65e7f566-0 gVajsk')
+    dato2=dato2[1].text[0:2] 
+    
+    #3 dolar
+    soup3=BeautifulSoup(((requests.get('https://dolarhoy.com/')).text),"html.parser")
+    dato3=soup3.find_all('div',class_='val')
+    dato3a=dato3[0].text[1:]
+    dato3b=dato3[1].text[1:]
+
+    #4 altcoin season
+    soup4=BeautifulSoup(((requests.get('https://coinmarketcap.com/charts/')).text),"html.parser")
+    dato4a=soup4.find_all('span',class_='sc-65e7f566-0 exabdI index-value')
+    dato4a=dato4a[0].text
+
+    #4 dominancia
+    dato4b=soup4.find_all('span',class_='sc-65e7f566-0 exabdI base-text')
+    dato4b1=dato4b[0].text
+    dato4b2=dato4b[1].text
+    dato4b3=dato4b[2].text
+
+    #5 tasa de interes
+    soup5=BeautifulSoup(((requests.get('https://fred.stlouisfed.org/series/FEDFUNDS')).text),"html.parser")
+    dato5=soup5.find_all('span',class_='series-meta-observation-value')
+    dato5=dato5[0].text
+
+
+
+    #print(dato5[0].text)
+    
+
+
+    print("")
+    print("dolar:",color1(dato3a),color0(""),color1(dato3b),color0(" dolarhoy"))
+    print("fear&greed btc:",color1(dato1),color0(" crypto:"),color1(dato2),color0(" alternative.me/cmc"))
+    print("altcoin season:",color1(dato4a),color0(" cmc"))
+    print("dominancia btc:",color1(dato4b1),color0(" eth:"),color1(dato4b2),color0(" otros:"),color1(dato4b3),color0(" cmc"))
+    print("")
+    print("tasa de interes:",color1(dato5),color0(" stlouisfed"))
+    print("")
+    
+    pausa(9000)   #1dia=86.400seg  9000seg=2.5hs
