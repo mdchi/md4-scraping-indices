@@ -60,15 +60,6 @@ while True:
 
 
 
-    #5
-    #soup5=BeautifulSoup(((requests.get('https://fred.stlouisfed.org/series/FEDFUNDS')).text),"html.parser")
-    #scrap5=soup5.find_all('span',class_='series-meta-observation-value')
-    #6
-    #soup6=BeautifulSoup(((requests.get('https://es.investing.com/economic-calendar/manufacturing-pmi-829')).text),"html.parser")
-    #scrap6=soup6.find_all('div',class_='key-stat-title')
-
-
-
     #print(scrap4b[0].text)
     
 
