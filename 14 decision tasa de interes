@@ -170,6 +170,6 @@ while True:
 
     pngjpg()
 
-    #enviarjpg()
+    enviarjpg()
     
     pausa(9000)   #1dia=86.400seg  9000seg=2.5hs
