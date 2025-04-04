@@ -1,0 +1,175 @@
+#curso de beautifulsoup https://www.youtube.com/watch?v=yKi9-BfbfzQ
+import os
+import time
+from bs4 import BeautifulSoup
+import requests
+import datetime
+from colorama import init,Back  #Style,Fore
+from mss import mss #screenshot
+from PIL import Image
+from email.message import EmailMessage  #empaquetar email
+import smtplib    #pip install secure-smtplib
+
+def pausa (seg):
+    for i in range(seg,0,-1):
+        print(f"{i}  ", end="\r")
+        time.sleep(1)
+ 
+def color1(numero):
+    return(Back.MAGENTA+str(numero))
+
+def color0(numero):
+    return (Back.BLACK+numero)
+
+def enviarjpg():
+    ahora=datetime.datetime.now()  #dia hora
+    ahorafor=ahora.strftime("%d.%m.%Y %a %H:%M:%S") #formato
+    emisor="mdchmariano@gmail.com"
+    texto=EmailMessage()
+    texto.set_content(" ")
+    texto['Subject'] = ahorafor
+    texto['From'] = "mdchmariano@gmail.com"
+    texto['To'] = "marianochiodo.mdc7@blogger.com"  #crypto
+    with open("md2.jpg", 'rb') as f2:
+        filedata = f2.read()
+    texto.add_attachment(filedata, maintype="image", subtype="jpg", filename="example.jpg")
+    server=smtplib.SMTP("smtp.gmail.com",587)
+    server.starttls()
+    server.login(emisor,"chgv wwpc qexr fytq")  # https://myaccount.google.com/apppasswords
+    server.send_message(texto)
+    server.quit()
+    print("email...")
+
+#funcion convertir png a jpg
+#https://stackoverflow-com.translate.goog/questions/43258461/convert-png-to-jpeg-using-pillow?_x_tr_sl=en&_x_tr_tl=es&_x_tr_hl=es&_x_tr_pto=tc
+def pngjpg():
+    im = Image.open("monitor-1.png")
+    im.mode
+    im = im.convert('RGB')
+    im.mode
+    im.save('md2.jpg', quality=95)
+
+#variables iniciales
+init()
+
+#bot
+while True:
+    os.system("cls")
+    #scraping
+    #find_all  limit=3 cantidad datos
+
+    #1 fear and greed btc
+    soup1=BeautifulSoup(((requests.get('https://alternative.me/crypto/fear-and-greed-index/')).text),"html.parser")
+    dato1=soup1.find_all('div',class_='fng-circle')
+    dato1=dato1[0].text
+    print("dato1...")
+
+    #2 fear and greed crypto
+    soup2=BeautifulSoup(((requests.get('https://coinmarketcap.com/charts/fear-and-greed-index/')).text),"html.parser")
+    dato2=soup2.find_all('div',class_='sc-65e7f566-0 gVajsk')
+    dato2=dato2[1].text[0:2]
+    print("dato2...")
+    
+    #3 dolar
+    soup3=BeautifulSoup(((requests.get('https://dolarhoy.com/')).text),"html.parser")
+    dato3=soup3.find_all('div',class_='val')
+    dato3a=dato3[0].text[1:]
+    dato3b=dato3[1].text[1:]
+    print("dato3...")
+
+    #4 altcoin season
+    soup4=BeautifulSoup(((requests.get('https://coinmarketcap.com/charts/')).text),"html.parser")
+    dato4a=soup4.find_all('span',class_='sc-65e7f566-0 exabdI index-value')
+    dato4a=dato4a[0].text
+    print("dato4a...")
+
+    #4 dominancia
+    dato4b=soup4.find_all('span',class_='sc-65e7f566-0 exabdI base-text')
+    dato4b1=dato4b[0].text
+    dato4b2=dato4b[1].text
+    dato4b3=dato4b[2].text
+    print("dato4b...")
+
+    #5 tasa de interes
+    soup5=BeautifulSoup(((requests.get('https://fred.stlouisfed.org/series/FEDFUNDS')).text),"html.parser")
+    dato5=soup5.find_all('span',class_='series-meta-observation-value')
+    dato5=dato5[0].text
+    print("dato5...")
+
+    #6 hoja de activos
+    soup6=BeautifulSoup(((requests.get('https://fred.stlouisfed.org/series/WALCL')).text),"html.parser")
+    dato6=soup6.find_all('span',class_='series-meta-observation-value')
+    dato6=dato6[0].text
+    print("dato6...")
+
+    #7 indice pmi manufacturero
+    soup7=BeautifulSoup(((requests.get('https://es.investing.com/economic-calendar/manufacturing-pmi-829')).text),"html.parser")
+    dato7=soup7.find_all('div',class_='releaseInfo bold')
+    dato7a=dato7[0].find_all('div')[1]
+    dato7a=dato7a.text
+    print("dato7...")
+
+    #8 indice pmi no manufacturero
+    soup8=BeautifulSoup(((requests.get('https://es.investing.com/economic-calendar/ism-non-manufacturing-pmi-176')).text),"html.parser")
+    dato8=soup8.find_all('div',class_='releaseInfo bold')
+    dato8a=dato8[0].find_all('div')[1]
+    dato8a=dato8a.text
+    print("dato8...")
+
+    #9 oro
+    soup9=BeautifulSoup(((requests.get('https://es.investing.com/commodities/gold')).text),"html.parser")
+    dato9=soup9.find_all('div',class_='mb-3 flex flex-wrap items-center gap-x-4 gap-y-2 md:mb-0.5 md:gap-6')
+    dato9a=dato9[0].find_all('div')[0]
+    dato9a=dato9a.text[:-3]
+    print("dato9...")
+
+    #10 rentabilidad bono eeuu 10 años
+    soup10=BeautifulSoup(((requests.get('https://es.investing.com/rates-bonds/u.s.-10-year-bond-yield')).text),"html.parser")
+    dato10=soup10.find_all('div',class_='mb-3 flex flex-wrap items-center gap-x-4 gap-y-2 md:mb-0.5 md:gap-6')
+    dato10a=dato10[0].find_all('div')[0]
+    dato10a=dato10a.text[:-2]
+    print("dato10...")
+
+    #11 tasa de interes futuros
+    soup11=BeautifulSoup(((requests.get('https://www.investing.com/central-banks/fed-rate-monitor')).text),"html.parser")
+    dato11=soup11.find_all('div',class_='fedRateCountdown')
+    dato11a=dato11[0].find_all('span')[0]
+    dato11a=dato11a.text[1]  #semanas
+    dato11b=dato11[0].find_all('span')[1]
+    dato11b=dato11b.text[1]  #dias
+    print("dato11...")
+
+
+
+    os.system("cls")    
+    ahora=datetime.datetime.now()  #dia hora
+    ahorafor=ahora.strftime("%d.%m.%Y %a %H:%M:%S") #formato
+    print(ahorafor)  #dia y hora
+    print("")
+    print("dolar:",color1(dato3a),color0(""),color1(dato3b),color0(" dolarhoy"))
+    print("")
+    print("fear&greed btc:   ",color1(dato1),color0(" alternative.me"))
+    print("fear&greed crypto:",color1(dato2),color0(" cmc"))
+    print("altcoin season:",color1(dato4a),color0(" cmc"))
+    print("")
+    print("dominancia btc:",color1(dato4b1),color0(" eth:"),color1(dato4b2),color0(" otros:"),color1(dato4b3),color0(" cmc"))
+    print("")
+    print("tasa de interes:",color1(dato5),color0(" stlouisfed BAJAR"))
+    print("decision tasa de interes:",color1(dato11a),"semanas y",color1(dato11b),"dias",color0(" investing"))
+    print("hoja de activos:",color1(dato6)+",000,000",color0(" stlouisfed SUBIR"))
+    print("oro:",color1(dato9a),color0(" investing BAJAR"))
+    print("rentabilidad bono 10a:",color1(dato10a),color0(" investing BAJAR"))
+    print("")
+    print("pmi manufacturero:   ",color1(dato7a)+color0("  >50=QE <50=QT investing"))
+    print("pmi no manufacturero:",color1(dato8a)+color0("  >50=QE <50=QT investing"))
+    print("")
+
+    #captura de pantalla https://stackoverflow.com/questions/2846947/get-screenshot-on-windows-with-python
+    with mss() as sct:
+        sct.shot()
+
+    pngjpg()
+
+    #enviarjpg()
+    
+    pausa(9000)   #1dia=86.400seg  9000seg=2.5hs
